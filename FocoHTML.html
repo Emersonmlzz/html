@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Muito Além</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .question {
+            background-color: white;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .options {
+            margin-left: 20px;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        #result {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+            display: none;
+        }
+        #email-form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-top: 30px;
+            display: none;
+        }
+        #email-form h2 {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        #subscribe-btn {
+            background-color: #27ae60;
+        }
+        #subscribe-btn:hover {
+            background-color: #219653;
+        }
+        .success-message {
+            color: #27ae60;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>HTML muito Além</h1>
+    
+    <div id="quiz">
+        <div class="question">
+            <p>1. Qual é a capital do Brasil?</p>
+            <div class="options">
+                <label><input type="radio" name="q1" value="a"> a) Rio de Janeiro</label><br>
+                <label><input type="radio" name="q1" value="b"> b) São Paulo</label><br>
+                <label><input type="radio" name="q1" value="c"> c) Brasília</label><br>
+                <label><input type="radio" name="q1" value="d"> d) Belo Horizonte</label>
+            </div>
+        </div>
+        
+        <div class="question">
+            <p>2. Quantos planetas existem no sistema solar?</p>
+            <div class="options">
+                <label><input type="radio" name="q2" value="a"> a) 7</label><br>
+                <label><input type="radio" name="q2" value="b"> b) 8</label><br>
+                <label><input type="radio" name="q2" value="c"> c) 9</label><br>
+                <label><input type="radio" name="q2" value="d"> d) 10</label>
+            </div>
+        </div>
+        
+        <div class="question">
+            <p>3. Qual destes não é um sistema operacional?</p>
+            <div class="options">
+                <label><input type="radio" name="q3" value="a"> a) Windows</label><br>
+                <label><input type="radio" name="q3" value="b"> b) Linux</label><br>
+                <label><input type="radio" name="q3" value="c"> c) macOS</label><br>
+                <label><input type="radio" name="q3" value="d"> d) Google</label>
+            </div>
+        </div>
+        
+        <button onclick="checkAnswers()">Verificar Respostas</button>
+    </div>
+    
+    <div id="result"></div>
+    
+    <div id="email-form">
+        <h2>Quer receber mais testes?</h2>
+        <p>Cadastre seu e-mail para receber novos desafios e testar sua inteligência!</p>
+        <form id="subscribe-form">
+            <input type="email" id="email" placeholder="Digite seu melhor e-mail" required>
+            <button type="button" id="subscribe-btn" onclick="subscribe()">Quero receber mais testes!</button>
+        </form>
+    </div>
+    
+    <div class="success-message" id="success-message">
+        Obrigado por se cadastrar! Em breve você receberá novos testes no seu e-mail.
+    </div>
+    
+    <script>
+        function checkAnswers() {
+            // Respostas corretas
+            const correctAnswers = {
+                q1: "c",
+                q2: "b",
+                q3: "d"
+            };
+            
+            let score = 0;
+            let totalQuestions = Object.keys(correctAnswers).length;
+            
+            // Verificar cada questão
+            for (let question in correctAnswers) {
+                const selectedOption = document.querySelector(`input[name="${question}"]:checked`);
+                
+                if (selectedOption) {
+                    if (selectedOption.value === correctAnswers[question]) {
+                        score++;
+                    }
+                }
+            }
+            
+            // Exibir resultado
+            const resultDiv = document.getElementById('result');
+            resultDiv.style.display = 'block';
+            resultDiv.innerHTML = `Você acertou ${score} de ${totalQuestions} questões!`;
+            
+            // Adicionar feedback baseado no desempenho
+            if (score === totalQuestions) {
+                resultDiv.innerHTML += "<br>Excelente! Você acertou tudo!";
+                resultDiv.style.color = "green";
+            } else if (score >= totalQuestions / 2) {
+                resultDiv.innerHTML += "<br>Bom trabalho!";
+                resultDiv.style.color = "orange";
+            } else {
+                resultDiv.innerHTML += "<br>Que tal tentar novamente?";
+                resultDiv.style.color = "red";
+            }
+            
+            // Mostrar formulário de e-mail após o teste
+            document.getElementById('email-form').style.display = 'block';
+        }
+        
+        function subscribe() {
+            const email = document.getElementById('email').value;
+            
+            // Validação simples do e-mail
+            if (email.includes('@') && email.includes('.')) {
+                // Aqui você normalmente enviaria o e-mail para um servidor
+                // Para este exemplo, vamos apenas mostrar uma mensagem de sucesso
+                
+                // Esconder o formulário
+                document.getElementById('email-form').style.display = 'none';
+                
+                // Mostrar mensagem de sucesso
+                document.getElementById('success-message').style.display = 'block';
+                
+                // Simular envio do e-mail (em um caso real, você usaria AJAX ou Fetch API)
+                console.log(`E-mail ${email} cadastrado com sucesso!`);
+                
+                // Aqui você pode adicionar código para realmente enviar os dados para seu servidor
+                // Exemplo com Fetch API:
+                /*
+                fetch('/api/subscribe', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({email: email}),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                    document.getElementById('success-message').style.display = 'block';
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    alert('Ocorreu um erro ao cadastrar seu e-mail.');
+                });
+                */
+            } else {
+                alert('Por favor, insira um e-mail válido.');
+            }
+        }
+    </script>
+</body>
+</html>
